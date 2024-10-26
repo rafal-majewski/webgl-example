@@ -1,6 +1,6 @@
+import type {Triangle} from "../../engine/Triangle.js";
 import {serializeCoordinates} from "./serializeCoordinates.js";
 import type {SerializedTriangle} from "./SerializedTriangle.js";
-import type {Triangle} from "./Triangle.js";
 
 export function serializeTriangle(triangle: Triangle): SerializedTriangle {
 	const serializedVertex1 = serializeCoordinates(triangle.vertex1);
