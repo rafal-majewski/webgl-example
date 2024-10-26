@@ -1,7 +1,7 @@
-import {paint} from "./paint.js";
+import {paintCanvas} from "./paintCanvas.js";
 import {resizeCanvasToItsContainer} from "./resizeCanvasToItsContainer.js";
 
 export function resetCanvas(gl: WebGL2RenderingContext): void {
 	resizeCanvasToItsContainer(gl.canvas as HTMLCanvasElement);
-	paint(gl);
+	paintCanvas(gl);
 }
