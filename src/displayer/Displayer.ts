@@ -46,8 +46,20 @@ export class Displayer {
 			positionOffsetBytes,
 		);
 
+		const colorAttributeLocation = 1;
+		this.gl.enableVertexAttribArray(colorAttributeLocation);
+		const colorOffsetBytes = Float32Array.BYTES_PER_ELEMENT * dimensionInVertexCount;
+		this.gl.vertexAttribPointer(
+			colorAttributeLocation,
+			componentInColorCount,
+			this.gl.FLOAT,
+			false,
+			strideBytes,
+			colorOffsetBytes,
+		);
+
 		this.gl.clear(this.gl.COLOR_BUFFER_BIT);
-		this.gl.drawArrays(this.gl.TRIANGLES, 0, bufferData.length / 2);
+		this.gl.drawArrays(this.gl.TRIANGLES, 0, bufferData.length / (dimensionInVertexCount + componentInColorCount));
 	}
 
 	public resizeAndDisplay(triangles: readonly Triangle[]): void {
