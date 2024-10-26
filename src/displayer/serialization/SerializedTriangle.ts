@@ -1,7 +1,7 @@
-import type {SerializedCoordinates} from "./SerializedCoordinates.js";
+import type {SerializedVertex} from "./SerializedVertex.js";
 
 export type SerializedTriangle = readonly [
-	...SerializedCoordinates,
-	...SerializedCoordinates,
-	...SerializedCoordinates,
+	...SerializedVertex,
+	...SerializedVertex,
+	...SerializedVertex,
 ];

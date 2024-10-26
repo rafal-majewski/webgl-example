@@ -33,7 +33,9 @@ export class Displayer {
 		this.gl.enableVertexAttribArray(0);
 		const dimensionInVertexCount = 2;
 		const positionOffsetBytes = 0;
-		const strideBytes = Float32Array.BYTES_PER_ELEMENT * dimensionInVertexCount;
+		const componentInColorCount = 3;
+		const strideBytes =
+			Float32Array.BYTES_PER_ELEMENT * (dimensionInVertexCount + componentInColorCount);
 
 		this.gl.vertexAttribPointer(
 			0,
