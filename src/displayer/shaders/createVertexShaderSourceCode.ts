@@ -1,4 +1,4 @@
-export function createVertexShaderSourceCode(locationPosition: number) {
+export function createVertexShaderSourceCode(locationPosition: number): string {
 	return `#version 300 es
 layout (location = ${locationPosition}) in vec2 a_position;
 
