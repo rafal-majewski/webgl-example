@@ -1,8 +1,7 @@
 import type {Triangle} from "../engine/Triangle.js";
-import type {SerializedTriangle} from "./serialization/triangle/SerializedTriangle.js";
-import {serializeTriangle} from "./serialization/triangle/serializeTriangle.js";
+import {serializeTriangles} from "./serialization/triangles/serializeTriangles.js";
 
-export function computeBufferData(triangle: Triangle): Float32Array {
-	const serializedTriangle: SerializedTriangle = serializeTriangle(triangle);
-	return new Float32Array(serializedTriangle);
+export function computeBufferData(triangles: readonly Triangle[]): Float32Array {
+	const serializedTriangles = serializeTriangles(triangles);
+	return new Float32Array(serializedTriangles);
 }
