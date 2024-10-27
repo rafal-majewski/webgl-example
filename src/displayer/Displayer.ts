@@ -3,12 +3,16 @@ import {createShaderSourceCodes} from "./shaders/createShaderSourceCodes.js";
 import {createProgramFromShaderSourceCodes} from "./utilities/createProgramFromShaderSourceCodes.js";
 import type {ShaderSourceCodes} from "./utilities/ShaderSourceCodes.js";
 import type {Square} from "../engine/Square.js";
+import type {Coordinates} from "../engine/Coordinates.js";
+import {computeUniformCameraData} from "./computeUniformCameraData.js";
 
 export class Displayer {
 	private readonly gl: WebGL2RenderingContext;
+	private readonly uniformCameraLocation: WebGLUniformLocation;
 
-	private constructor(gl: WebGL2RenderingContext) {
+	private constructor(gl: WebGL2RenderingContext, uniformCameraLocation: WebGLUniformLocation) {
 		this.gl = gl;
+		this.uniformCameraLocation = uniformCameraLocation;
 	}
 
 	private static readonly attributePositionVariableName = "a_position";
@@ -27,6 +31,7 @@ export class Displayer {
 
 	private static readonly positionOffsetBytes = 0;
 	private static readonly vertexInTriangleCount = 3;
+	private static readonly uniformCameraVariableName = "u_camera";
 
 	public static create(gl: WebGL2RenderingContext): Displayer {
 		gl.clearColor(0, 0, 0, 1);
@@ -34,6 +39,7 @@ export class Displayer {
 		const shaderSourceCodes: ShaderSourceCodes = createShaderSourceCodes(
 			Displayer.attributePositionVariableName,
 			Displayer.attributeColorVariableName,
+			Displayer.uniformCameraVariableName,
 		);
 
 		const program = createProgramFromShaderSourceCodes(gl, shaderSourceCodes);
@@ -73,13 +79,20 @@ export class Displayer {
 			Displayer.colorOffsetBytes,
 		);
 
-		return new Displayer(gl);
+		const uniformCameraLocation = gl.getUniformLocation(
+			program,
+			Displayer.uniformCameraVariableName,
+		) as WebGLUniformLocation;
+
+		return new Displayer(gl, uniformCameraLocation);
 	}
 
-	public paint(square: Square): void {
+	public paint(square: Square, camera: Coordinates): void {
 		this.gl.clear(this.gl.COLOR_BUFFER_BIT);
 		const bufferData = computeBufferData(square);
 		this.gl.bufferData(this.gl.ARRAY_BUFFER, bufferData, this.gl.STATIC_DRAW);
+		const uniformCameraData = computeUniformCameraData(camera);
+		this.gl.uniform3fv(this.uniformCameraLocation, uniformCameraData);
 
 		this.gl.drawArrays(
 			this.gl.TRIANGLES,
