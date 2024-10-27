@@ -1,9 +1,19 @@
 import type {ShaderSourceCodes} from "../utilities/ShaderSourceCodes.js";
+import {createFragmentShaderSourceCode} from "./createFragmentShaderSourceCode.js";
 import {createVertexShaderSourceCode} from "./createVertexShaderSourceCode.js";
-import {fragmentShaderSourceCode} from "./fragmentShaderSourceCode.js";
+const varyingColorVariableName = "v_color";
 
-export function createShaderSourceCodes(attributePositionVariableName: string): ShaderSourceCodes {
-	const vertexShaderSourceCode = createVertexShaderSourceCode(attributePositionVariableName);
+export function createShaderSourceCodes(
+	attributePositionVariableName: string,
+	attributeColorVariableName: string,
+): ShaderSourceCodes {
+	const vertexShaderSourceCode = createVertexShaderSourceCode(
+		attributePositionVariableName,
+		attributeColorVariableName,
+		varyingColorVariableName,
+	);
+
+	const fragmentShaderSourceCode = createFragmentShaderSourceCode(varyingColorVariableName);
 
 	return {
 		vertex: vertexShaderSourceCode,

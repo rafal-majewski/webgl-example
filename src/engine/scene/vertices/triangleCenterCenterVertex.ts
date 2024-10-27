@@ -5,4 +5,9 @@ export const triangleCenterCenterVertex: Vertex = {
 		x: 0,
 		y: 0,
 	},
+	color: {
+		red: 0.5,
+		green: 0.5,
+		blue: 0,
+	},
 };

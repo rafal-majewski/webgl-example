@@ -5,4 +5,9 @@ export const triangleLeftBottomVertex: Vertex = {
 		x: -0.5,
 		y: -0.5,
 	},
+	color: {
+		red: 0,
+		green: 0,
+		blue: 0,
+	},
 };
