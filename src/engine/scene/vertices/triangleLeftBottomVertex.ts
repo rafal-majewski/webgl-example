@@ -1,6 +1,8 @@
-import type {Coordinates} from "../../Coordinates.js";
+import type {Vertex} from "../../Vertex.js";
 
-export const triangleLeftBottomVertex: Coordinates = {
-	x: -0.5,
-	y: -0.5,
+export const triangleLeftBottomVertex: Vertex = {
+	position: {
+		x: -0.5,
+		y: -0.5,
+	},
 };

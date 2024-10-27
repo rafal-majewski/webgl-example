@@ -1,6 +1,8 @@
-import type {Coordinates} from "../../Coordinates.js";
+import type {Vertex} from "../../Vertex.js";
 
-export const triangleCenterCenterVertex: Coordinates = {
-	x: 0,
-	y: 0,
+export const triangleCenterCenterVertex: Vertex = {
+	position: {
+		x: 0,
+		y: 0,
+	},
 };
