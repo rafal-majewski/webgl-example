@@ -6,10 +6,12 @@ const varyingColorVariableName = "v_color";
 export function createShaderSourceCodes(
 	attributePositionVariableName: string,
 	attributeColorVariableName: string,
+	uniformCameraVariableName: string,
 ): ShaderSourceCodes {
 	const vertexShaderSourceCode = createVertexShaderSourceCode(
 		attributePositionVariableName,
 		attributeColorVariableName,
+		uniformCameraVariableName,
 		varyingColorVariableName,
 	);
 

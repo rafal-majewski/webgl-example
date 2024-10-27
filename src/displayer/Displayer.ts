@@ -3,12 +3,16 @@ import {computeBufferData} from "./computeBufferData.js";
 import {createProgramFromShaderSourceCodes} from "./utilities/createProgramFromShaderSourceCodes.js";
 import {createShaderSourceCodes} from "./shaders/createShaderSourceCodes.js";
 import type {ShaderSourceCodes} from "./utilities/ShaderSourceCodes.js";
+import type {Coordinates} from "../engine/Coordinates.js";
+import {computeUniformCameraData} from "./computeUniformCameraData.js";
 
 export class Displayer {
 	private readonly gl: WebGL2RenderingContext;
+	private readonly uniformCameraLocation: WebGLUniformLocation;
 
-	private constructor(gl: WebGL2RenderingContext) {
+	private constructor(gl: WebGL2RenderingContext, uniformCameraLocation: WebGLUniformLocation) {
 		this.gl = gl;
+		this.uniformCameraLocation = uniformCameraLocation;
 	}
 
 	private static readonly dimensionInCoordinatesCount = 3;
@@ -26,12 +30,15 @@ export class Displayer {
 	private static readonly strideBytes =
 		(Displayer.positionSize + Displayer.colorSize) * Float32Array.BYTES_PER_ELEMENT;
 
+	private static readonly uniformCameraVariableName = "u_camera";
+
 	public static create(gl: WebGL2RenderingContext): Displayer {
 		gl.clearColor(0, 0, 0, 1);
 
 		const shaderSourceCodes: ShaderSourceCodes = createShaderSourceCodes(
 			Displayer.attributePositionVariableName,
 			Displayer.attributeColorVariableName,
+			Displayer.uniformCameraVariableName,
 		);
 
 		const program = createProgramFromShaderSourceCodes(gl, shaderSourceCodes);
@@ -71,13 +78,20 @@ export class Displayer {
 			Displayer.colorOffsetBytes,
 		);
 
-		return new Displayer(gl);
+		const uniformCameraLocation = gl.getUniformLocation(
+			program,
+			Displayer.uniformCameraVariableName,
+		) as WebGLUniformLocation;
+
+		return new Displayer(gl, uniformCameraLocation);
 	}
 
-	public paint(triangles: readonly Triangle[]): void {
+	public paint(triangles: readonly Triangle[], camera: Coordinates): void {
 		this.gl.clear(this.gl.COLOR_BUFFER_BIT);
 		const bufferData = computeBufferData(triangles);
 		this.gl.bufferData(this.gl.ARRAY_BUFFER, bufferData, this.gl.STATIC_DRAW);
+		const uniformCameraData = computeUniformCameraData(camera);
+		this.gl.uniform3fv(this.uniformCameraLocation, uniformCameraData);
 		this.gl.drawArrays(this.gl.TRIANGLES, 0, triangles.length * Displayer.vertexInTriangleCount);
 	}
 
@@ -89,8 +103,8 @@ export class Displayer {
 		this.gl.viewport(0, 0, canvas.width, canvas.height);
 	}
 
-	public resizeAndPaint(triangles: readonly Triangle[]): void {
+	public resizeAndPaint(triangles: readonly Triangle[], camera: Coordinates): void {
 		this.resize();
-		this.paint(triangles);
+		this.paint(triangles, camera);
 	}
 }
