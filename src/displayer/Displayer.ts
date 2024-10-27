@@ -14,8 +14,18 @@ export class Displayer {
 	private static readonly positionLocation = 0;
 	private static readonly dimensionInCoordinatesCount = 2;
 	private static readonly positionSize = Displayer.dimensionInCoordinatesCount;
-	private static readonly strideBytes = Displayer.positionSize * Float32Array.BYTES_PER_ELEMENT;
+	private static readonly componentInColorCount = 3;
+	private static readonly colorSize = Displayer.componentInColorCount;
+
+	private static readonly strideBytes =
+		(Displayer.positionSize + Displayer.colorSize) * Float32Array.BYTES_PER_ELEMENT;
+
 	private static readonly positionOffsetBytes = 0;
+	private static readonly colorLocation = 1;
+
+	private static readonly colorOffsetBytes =
+		Displayer.positionSize * Float32Array.BYTES_PER_ELEMENT;
+
 	private static readonly vertexInTriangleCount = 3;
 
 	public static create(gl: WebGL2RenderingContext): Displayer {
@@ -23,6 +33,7 @@ export class Displayer {
 
 		const shaderSourceCodes: ShaderSourceCodes = createShaderSourceCodes(
 			Displayer.positionLocation,
+			Displayer.colorLocation,
 		);
 
 		const program = createProgramFromShaderSourceCodes(gl, shaderSourceCodes);
@@ -38,6 +49,17 @@ export class Displayer {
 			false,
 			Displayer.strideBytes,
 			Displayer.positionOffsetBytes,
+		);
+
+		gl.enableVertexAttribArray(Displayer.colorLocation);
+
+		gl.vertexAttribPointer(
+			Displayer.colorLocation,
+			Displayer.colorSize,
+			gl.FLOAT,
+			false,
+			Displayer.strideBytes,
+			Displayer.colorOffsetBytes,
 		);
 
 		return new Displayer(gl);

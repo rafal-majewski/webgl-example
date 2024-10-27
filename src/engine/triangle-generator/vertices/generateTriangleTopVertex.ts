@@ -1,4 +1,5 @@
 import type {Coordinates} from "../../Coordinates.js";
+import type {RgbColor} from "../../RgbColor.js";
 import type {Vertex} from "../../Vertex.js";
 
 export function generateTriangleTopVertex(): Vertex {
@@ -7,7 +8,14 @@ export function generateTriangleTopVertex(): Vertex {
 		y: 0.5,
 	};
 
+	const color: RgbColor = {
+		red: 1,
+		green: 0,
+		blue: 0,
+	};
+
 	return {
 		position,
+		color,
 	};
 }
