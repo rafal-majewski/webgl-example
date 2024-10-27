@@ -11,7 +11,7 @@ export class Displayer {
 		this.gl = gl;
 	}
 
-	private static readonly dimensionInCoordinatesCount = 2;
+	private static readonly dimensionInCoordinatesCount = 3;
 	private static readonly componentInColorCount = 3;
 	private static readonly vertexInTriangleCount = 3;
 	private static readonly attributePositionVariableName = "a_position";
