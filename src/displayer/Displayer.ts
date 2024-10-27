@@ -1,8 +1,8 @@
 import type {Triangle} from "../engine/Triangle.js";
 import {computeBufferData} from "./computeBufferData.js";
-import {fragmentShaderSourceCode} from "./fragmentShaderSourceCode.js";
 import {createProgramFromShaderSourceCodes} from "./utilities/createProgramFromShaderSourceCodes.js";
-import {createVertexShaderSourceCode} from "./createVertexShaderSourceCode.js";
+import {createShaderSourceCodes} from "./shaders/createShaderSourceCodes.js";
+import type {ShaderSourceCodes} from "./utilities/ShaderSourceCodes.js";
 
 export class Displayer {
 	private readonly gl: WebGL2RenderingContext;
@@ -20,16 +20,12 @@ export class Displayer {
 
 	public static create(gl: WebGL2RenderingContext): Displayer {
 		gl.clearColor(0, 0, 0, 1);
-		const vertexShaderSourceCode = createVertexShaderSourceCode(
+
+		const shaderSourceCodes: ShaderSourceCodes = createShaderSourceCodes(
 			Displayer.attributePositionVariableName,
 		);
 
-		const program = createProgramFromShaderSourceCodes(
-			gl,
-			vertexShaderSourceCode,
-			fragmentShaderSourceCode,
-		);
-
+		const program = createProgramFromShaderSourceCodes(gl, shaderSourceCodes);
 		gl.useProgram(program);
 		const buffer = gl.createBuffer();
 		gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
