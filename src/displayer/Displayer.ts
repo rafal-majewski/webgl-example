@@ -11,18 +11,27 @@ export class Displayer {
 		this.gl = gl;
 	}
 
-	private static readonly attributePositionVariableName = "a_position";
 	private static readonly dimensionInCoordinatesCount = 2;
-	private static readonly positionSize = Displayer.dimensionInCoordinatesCount;
-	private static readonly strideBytes = Displayer.positionSize * Float32Array.BYTES_PER_ELEMENT;
-	private static readonly positionOffsetBytes = 0;
+	private static readonly componentInColorCount = 3;
 	private static readonly vertexInTriangleCount = 3;
+	private static readonly attributePositionVariableName = "a_position";
+	private static readonly positionSize = Displayer.dimensionInCoordinatesCount;
+	private static readonly positionOffsetBytes = 0;
+	private static readonly attributeColorVariableName = "a_color";
+	private static readonly colorSize = Displayer.componentInColorCount;
+
+	private static readonly colorOffsetBytes =
+		Displayer.positionSize * Float32Array.BYTES_PER_ELEMENT;
+
+	private static readonly strideBytes =
+		(Displayer.positionSize + Displayer.colorSize) * Float32Array.BYTES_PER_ELEMENT;
 
 	public static create(gl: WebGL2RenderingContext): Displayer {
 		gl.clearColor(0, 0, 0, 1);
 
 		const shaderSourceCodes: ShaderSourceCodes = createShaderSourceCodes(
 			Displayer.attributePositionVariableName,
+			Displayer.attributeColorVariableName,
 		);
 
 		const program = createProgramFromShaderSourceCodes(gl, shaderSourceCodes);
@@ -44,6 +53,22 @@ export class Displayer {
 			false,
 			Displayer.strideBytes,
 			Displayer.positionOffsetBytes,
+		);
+
+		const attributeColorLocation = gl.getAttribLocation(
+			program,
+			Displayer.attributeColorVariableName,
+		);
+
+		gl.enableVertexAttribArray(attributeColorLocation);
+
+		gl.vertexAttribPointer(
+			attributeColorLocation,
+			Displayer.colorSize,
+			gl.FLOAT,
+			false,
+			Displayer.strideBytes,
+			Displayer.colorOffsetBytes,
 		);
 
 		return new Displayer(gl);

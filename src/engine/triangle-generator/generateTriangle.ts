@@ -1,4 +1,3 @@
-import type {Coordinates} from "../Coordinates.js";
 import type {Triangle} from "../Triangle.js";
 import type {Vertex} from "../Vertex.js";
 import {generateTriangleLeftVertex} from "./vertices/generateTriangleLeftVertex.js";
