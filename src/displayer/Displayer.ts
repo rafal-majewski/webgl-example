@@ -1,9 +1,9 @@
+import type {Camera} from "../engine/Camera.js";
 import {computeBufferData} from "./computeBufferData.js";
 import {createShaderSourceCodes} from "./shaders/createShaderSourceCodes.js";
 import {createProgramFromShaderSourceCodes} from "./utilities/createProgramFromShaderSourceCodes.js";
 import type {ShaderSourceCodes} from "./utilities/ShaderSourceCodes.js";
 import type {Square} from "../engine/Square.js";
-import type {Coordinates} from "../engine/Coordinates.js";
 import {computeUniformCameraData} from "./computeUniformCameraData.js";
 
 export class Displayer {
@@ -87,7 +87,7 @@ export class Displayer {
 		return new Displayer(gl, uniformCameraLocation);
 	}
 
-	public paint(square: Square, camera: Coordinates): void {
+	public paint(square: Square, camera: Camera): void {
 		this.gl.clear(this.gl.COLOR_BUFFER_BIT);
 		const bufferData = computeBufferData(square);
 		this.gl.bufferData(this.gl.ARRAY_BUFFER, bufferData, this.gl.STATIC_DRAW);

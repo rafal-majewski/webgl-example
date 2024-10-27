@@ -1,9 +1,11 @@
+import type {Camera} from "../Camera.js";
 import type {Coordinates} from "../Coordinates.js";
+import {generateCameraPosition} from "./generateCameraPosition.js";
 
-export function generateCamera(): Coordinates {
+export function generateCamera(): Camera {
+	const position: Coordinates = generateCameraPosition();
+
 	return {
-		x: Math.sin(0.0003 * Date.now()),
-		y: Math.cos(0.0003 * Date.now()),
-		z: 0,
+		position,
 	};
 }
