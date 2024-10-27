@@ -12,7 +12,7 @@ export class Displayer {
 	}
 
 	private static readonly attributePositionVariableName = "a_position";
-	private static readonly dimensionInCoordinatesCount = 2;
+	private static readonly dimensionInCoordinatesCount = 3;
 	private static readonly componentInColorCount = 3;
 	private static readonly triangleInSquareCount = 4;
 	private static readonly positionSize = Displayer.dimensionInCoordinatesCount;

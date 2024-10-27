@@ -22,6 +22,12 @@ export function createSquare(
 					leftTopVertex.position.y +
 					rightTopVertex.position.y) /
 				4,
+			z:
+				(leftBottomVertex.position.z +
+					rightBottomVertex.position.z +
+					leftTopVertex.position.z +
+					rightTopVertex.position.z) /
+				4,
 		},
 		color: {
 			red:
