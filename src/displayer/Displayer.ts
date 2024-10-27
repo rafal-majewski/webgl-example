@@ -1,8 +1,8 @@
-import type {Triangle} from "../engine/Triangle.js";
 import {computeBufferData} from "./computeBufferData.js";
 import {createShaderSourceCodes} from "./shaders/createShaderSourceCodes.js";
 import {createProgramFromShaderSourceCodes} from "./utilities/createProgramFromShaderSourceCodes.js";
 import type {ShaderSourceCodes} from "./utilities/ShaderSourceCodes.js";
+import type {Square} from "../engine/Square.js";
 
 export class Displayer {
 	private readonly gl: WebGL2RenderingContext;
@@ -14,6 +14,7 @@ export class Displayer {
 	private static readonly attributePositionVariableName = "a_position";
 	private static readonly dimensionInCoordinatesCount = 2;
 	private static readonly componentInColorCount = 3;
+	private static readonly triangleInSquareCount = 4;
 	private static readonly positionSize = Displayer.dimensionInCoordinatesCount;
 	private static readonly attributeColorVariableName = "a_color";
 	private static readonly colorSize = Displayer.componentInColorCount;
@@ -75,11 +76,16 @@ export class Displayer {
 		return new Displayer(gl);
 	}
 
-	public paint(triangle: Triangle): void {
+	public paint(square: Square): void {
 		this.gl.clear(this.gl.COLOR_BUFFER_BIT);
-		const bufferData = computeBufferData(triangle);
+		const bufferData = computeBufferData(square);
 		this.gl.bufferData(this.gl.ARRAY_BUFFER, bufferData, this.gl.STATIC_DRAW);
-		this.gl.drawArrays(this.gl.TRIANGLES, 0, Displayer.vertexInTriangleCount);
+
+		this.gl.drawArrays(
+			this.gl.TRIANGLES,
+			0,
+			Displayer.triangleInSquareCount * Displayer.vertexInTriangleCount,
+		);
 	}
 
 	public resize(): void {

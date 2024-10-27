@@ -1,6 +1,6 @@
 import type {Vertex} from "../../Vertex.js";
 
-export const triangleRightBottomVertex: Vertex = {
+export const squareRightBottomVertex: Vertex = {
 	position: {
 		x: 0.5,
 		y: -0.5,
