@@ -11,7 +11,7 @@ uniform vec3 ${uniformCameraVariableName};
 out vec3 ${varyingColorVariableName};
 
 void main() {
-	${varyingColorVariableName} = a_color;
-	gl_Position = vec4(a_position - ${uniformCameraVariableName}, 1.0);
+	${varyingColorVariableName} = ${attributeColorVariableName};
+	gl_Position = vec4(${attributePositionVariableName} - ${uniformCameraVariableName}, 1.0);
 }`;
 }

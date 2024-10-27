@@ -3,8 +3,8 @@ import {computeBufferData} from "./computeBufferData.js";
 import {createProgramFromShaderSourceCodes} from "./utilities/createProgramFromShaderSourceCodes.js";
 import {createShaderSourceCodes} from "./shaders/createShaderSourceCodes.js";
 import type {ShaderSourceCodes} from "./utilities/ShaderSourceCodes.js";
-import type {Coordinates} from "../engine/Coordinates.js";
 import {computeUniformCameraData} from "./computeUniformCameraData.js";
+import type {Camera} from "../engine/camera/Camera.js";
 
 export class Displayer {
 	private readonly gl: WebGL2RenderingContext;
@@ -86,7 +86,7 @@ export class Displayer {
 		return new Displayer(gl, uniformCameraLocation);
 	}
 
-	public paint(triangles: readonly Triangle[], camera: Coordinates): void {
+	public paint(triangles: readonly Triangle[], camera: Camera): void {
 		this.gl.clear(this.gl.COLOR_BUFFER_BIT);
 		const bufferData = computeBufferData(triangles);
 		this.gl.bufferData(this.gl.ARRAY_BUFFER, bufferData, this.gl.STATIC_DRAW);
@@ -103,7 +103,7 @@ export class Displayer {
 		this.gl.viewport(0, 0, canvas.width, canvas.height);
 	}
 
-	public resizeAndPaint(triangles: readonly Triangle[], camera: Coordinates): void {
+	public resizeAndPaint(triangles: readonly Triangle[], camera: Camera): void {
 		this.resize();
 		this.paint(triangles, camera);
 	}
