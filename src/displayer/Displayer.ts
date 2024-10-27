@@ -83,6 +83,8 @@ export class Displayer {
 			Displayer.uniformCameraVariableName,
 		) as WebGLUniformLocation;
 
+		gl.enable(gl.DEPTH_TEST);
+		gl.depthFunc(gl.LESS);
 		return new Displayer(gl, uniformCameraLocation);
 	}
 
