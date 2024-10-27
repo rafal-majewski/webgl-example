@@ -74,11 +74,11 @@ export class Displayer {
 		return new Displayer(gl);
 	}
 
-	public paint(triangle: Triangle): void {
+	public paint(triangles: readonly Triangle[]): void {
 		this.gl.clear(this.gl.COLOR_BUFFER_BIT);
-		const bufferData = computeBufferData(triangle);
+		const bufferData = computeBufferData(triangles);
 		this.gl.bufferData(this.gl.ARRAY_BUFFER, bufferData, this.gl.STATIC_DRAW);
-		this.gl.drawArrays(this.gl.TRIANGLES, 0, Displayer.vertexInTriangleCount);
+		this.gl.drawArrays(this.gl.TRIANGLES, 0, triangles.length * Displayer.vertexInTriangleCount);
 	}
 
 	private resize(): void {
@@ -89,8 +89,8 @@ export class Displayer {
 		this.gl.viewport(0, 0, canvas.width, canvas.height);
 	}
 
-	public resizeAndPaint(triangle: Triangle): void {
+	public resizeAndPaint(triangles: readonly Triangle[]): void {
 		this.resize();
-		this.paint(triangle);
+		this.paint(triangles);
 	}
 }
