@@ -4,15 +4,18 @@ import {createProgramFromShaderSourceCodes} from "./utilities/createProgramFromS
 import {createShaderSourceCodes} from "./shaders/createShaderSourceCodes.js";
 import type {ShaderSourceCodes} from "./utilities/ShaderSourceCodes.js";
 import {computeUniformCameraData} from "./computeUniformCameraData.js";
+import {computeUniformCameraMatrix} from "./computeUniformCameraMatrix.js";
 import type {Camera} from "../engine/camera/Camera.js";
 
 export class Displayer {
 	private readonly gl: WebGL2RenderingContext;
 	private readonly uniformCameraLocation: WebGLUniformLocation;
+	private readonly uniformCameraMatrixLocation: WebGLUniformLocation;
 
-	private constructor(gl: WebGL2RenderingContext, uniformCameraLocation: WebGLUniformLocation) {
+	private constructor(gl: WebGL2RenderingContext, uniformCameraLocation: WebGLUniformLocation, uniformCameraMatrixLocation: WebGLUniformLocation) {
 		this.gl = gl;
 		this.uniformCameraLocation = uniformCameraLocation;
+		this.uniformCameraMatrixLocation = uniformCameraMatrixLocation;
 	}
 
 	private static readonly dimensionInCoordinatesCount = 3;
@@ -31,6 +34,7 @@ export class Displayer {
 		(Displayer.positionSize + Displayer.colorSize) * Float32Array.BYTES_PER_ELEMENT;
 
 	private static readonly uniformCameraVariableName = "u_camera";
+	private static readonly uniformCameraMatrixVariableName = "u_cameraMatrix";
 
 	public static create(gl: WebGL2RenderingContext): Displayer {
 		gl.clearColor(0, 0, 0, 1);
@@ -83,9 +87,14 @@ export class Displayer {
 			Displayer.uniformCameraVariableName,
 		) as WebGLUniformLocation;
 
+		const uniformCameraMatrixLocation = gl.getUniformLocation(
+			program,
+			Displayer.uniformCameraMatrixVariableName,
+		) as WebGLUniformLocation;
+
 		gl.enable(gl.DEPTH_TEST);
 		gl.depthFunc(gl.LESS);
-		return new Displayer(gl, uniformCameraLocation);
+		return new Displayer(gl, uniformCameraLocation, uniformCameraMatrixLocation);
 	}
 
 	public paint(triangles: readonly Triangle[], camera: Camera): void {
@@ -94,6 +103,8 @@ export class Displayer {
 		this.gl.bufferData(this.gl.ARRAY_BUFFER, bufferData, this.gl.STATIC_DRAW);
 		const uniformCameraData = computeUniformCameraData(camera);
 		this.gl.uniform3fv(this.uniformCameraLocation, uniformCameraData);
+		const uniformCameraMatrix = computeUniformCameraMatrix(camera);
+		this.gl.uniformMatrix4fv(this.uniformCameraMatrixLocation, false, uniformCameraMatrix);
 		this.gl.drawArrays(this.gl.TRIANGLES, 0, triangles.length * Displayer.vertexInTriangleCount);
 	}
 

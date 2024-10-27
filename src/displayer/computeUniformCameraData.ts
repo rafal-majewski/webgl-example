@@ -2,6 +2,7 @@ import {serializeCoordinates} from "./serialization/coordinates/serializeCoordin
 import type {Camera} from "../engine/camera/Camera.js";
 
 export function computeUniformCameraData(camera: Camera): Float32Array {
-	const serializedCamera = serializeCoordinates(camera.position);
-	return new Float32Array(serializedCamera);
+	const serializedPosition = serializeCoordinates(camera.position);
+	const serializedOrientation = new Float32Array([camera.orientation.horizontalRadians, camera.orientation.verticalRadians]);
+	return new Float32Array([...serializedPosition, ...serializedOrientation]);
 }
