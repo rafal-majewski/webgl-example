@@ -1,3 +1,4 @@
+import type {Cube} from "../Cube.js";
 import {createCube} from "./createCube.js";
 import {cubeLeftBottomFarVertex} from "./vertices/cubeLeftBottomFarVertex.js";
 import {cubeLeftBottomNearVertex} from "./vertices/cubeLeftBottomNearVertex.js";
@@ -8,7 +9,7 @@ import {cubeRightBottomNearVertex} from "./vertices/cubeRightBottomNearVertex.js
 import {cubeRightTopFarVertex} from "./vertices/cubeRightTopFarVertex.js";
 import {cubeRightTopNearVertex} from "./vertices/cubeRightTopNearVertex.js";
 
-export const cube = createCube(
+export const cube: Cube = createCube(
 	cubeLeftBottomNearVertex,
 	cubeLeftBottomFarVertex,
 	cubeLeftTopNearVertex,

@@ -1,18 +1,18 @@
 import type {Camera} from "../engine/Camera.js";
 import type {Cube} from "../engine/Cube.js";
 import {computeBufferData} from "./computeBufferData.js";
-import {computeUniformCameraData} from "./computeUniformCameraData.js";
+import {computeUniformProjectionData} from "./computeUniformProjectionData.js";
 import {createShaderSourceCodes} from "./shaders/createShaderSourceCodes.js";
 import {createProgramFromShaderSourceCodes} from "./utilities/createProgramFromShaderSourceCodes.js";
 import type {ShaderSourceCodes} from "./utilities/ShaderSourceCodes.js";
 
 export class Displayer {
 	private readonly gl: WebGL2RenderingContext;
-	private readonly uniformCameraLocation: WebGLUniformLocation;
+	private readonly uniformProjectionLocation: WebGLUniformLocation;
 
-	private constructor(gl: WebGL2RenderingContext, uniformCameraLocation: WebGLUniformLocation) {
+	private constructor(gl: WebGL2RenderingContext, uniformProjectionLocation: WebGLUniformLocation) {
 		this.gl = gl;
-		this.uniformCameraLocation = uniformCameraLocation;
+		this.uniformProjectionLocation = uniformProjectionLocation;
 	}
 
 	private static readonly attributePositionVariableName = "a_position";
@@ -32,7 +32,7 @@ export class Displayer {
 
 	private static readonly positionOffsetBytes = 0;
 	private static readonly vertexInTriangleCount = 3;
-	private static readonly uniformCameraVariableName = "u_camera";
+	private static readonly uniformProjectionVariableName = "u_projection";
 
 	public static create(gl: WebGL2RenderingContext): Displayer {
 		gl.clearColor(0, 0, 0, 1);
@@ -40,7 +40,7 @@ export class Displayer {
 		const shaderSourceCodes: ShaderSourceCodes = createShaderSourceCodes(
 			Displayer.attributePositionVariableName,
 			Displayer.attributeColorVariableName,
-			Displayer.uniformCameraVariableName,
+			Displayer.uniformProjectionVariableName,
 		);
 
 		const program = createProgramFromShaderSourceCodes(gl, shaderSourceCodes);
@@ -80,20 +80,22 @@ export class Displayer {
 			Displayer.colorOffsetBytes,
 		);
 
-		const uniformCameraLocation = gl.getUniformLocation(
+		const uniformProjectionLocation = gl.getUniformLocation(
 			program,
-			Displayer.uniformCameraVariableName,
+			Displayer.uniformProjectionVariableName,
 		) as WebGLUniformLocation;
 
-		return new Displayer(gl, uniformCameraLocation);
+		gl.enable(gl.DEPTH_TEST);
+		gl.depthFunc(gl.LESS);
+		return new Displayer(gl, uniformProjectionLocation);
 	}
 
 	public paint(cube: Cube, camera: Camera): void {
 		this.gl.clear(this.gl.COLOR_BUFFER_BIT);
 		const bufferData = computeBufferData(cube);
 		this.gl.bufferData(this.gl.ARRAY_BUFFER, bufferData, this.gl.STATIC_DRAW);
-		const uniformCameraData = computeUniformCameraData(camera);
-		this.gl.uniform3fv(this.uniformCameraLocation, uniformCameraData);
+		const uniformProjectionData = computeUniformProjectionData(camera);
+		this.gl.uniformMatrix4fv(this.uniformProjectionLocation, false, uniformProjectionData);
 
 		this.gl.drawArrays(
 			this.gl.TRIANGLES,
