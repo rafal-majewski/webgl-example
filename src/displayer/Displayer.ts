@@ -12,7 +12,7 @@ export class Displayer {
 	}
 
 	private static readonly positionLocation = 0;
-	private static readonly dimensionInCoordinatesCount = 2;
+	private static readonly dimensionInCoordinatesCount = 3;
 	private static readonly positionSize = Displayer.dimensionInCoordinatesCount;
 	private static readonly componentInColorCount = 3;
 	private static readonly colorSize = Displayer.componentInColorCount;
