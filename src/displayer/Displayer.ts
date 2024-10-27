@@ -62,6 +62,15 @@ export class Displayer {
 			Displayer.colorOffsetBytes,
 		);
 
+		const rotationMatrixLocation = gl.getUniformLocation(program, "u_rotationMatrix");
+		const rotationMatrix = new Float32Array([
+			Math.cos(Date.now() / 1000), -Math.sin(Date.now() / 1000), 0, 0,
+			Math.sin(Date.now() / 1000), Math.cos(Date.now() / 1000), 0, 0,
+			0, 0, 1, 0,
+			0, 0, 0, 1,
+		]);
+		gl.uniformMatrix4fv(rotationMatrixLocation, false, rotationMatrix);
+
 		return new Displayer(gl);
 	}
 
