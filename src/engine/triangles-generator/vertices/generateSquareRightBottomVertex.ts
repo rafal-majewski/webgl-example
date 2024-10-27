@@ -2,15 +2,15 @@ import type {Coordinates} from "../../Coordinates.js";
 import type {RgbColor} from "../../RgbColor.js";
 import type {Vertex} from "../../Vertex.js";
 
-export function generateTriangleTopVertex(): Vertex {
+export function generateSquareRightBottomVertex(): Vertex {
 	const position: Coordinates = {
-		x: 0,
-		y: 0.5 + Math.sin(Date.now() / 1000) / 2,
+		x: 0.5 + 0.5 * Math.sin(Date.now() / 1000),
+		y: -0.5 - 0.5 * Math.sin(Date.now() / 1000),
 	};
 
 	const color: RgbColor = {
-		red: 1,
-		green: 0,
+		red: 0,
+		green: 1,
 		blue: 0,
 	};
 
