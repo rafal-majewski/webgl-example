@@ -1,5 +1,6 @@
 import type {Camera} from "../engine/Camera.js";
 import type {Cube} from "../engine/Cube.js";
+import type {Dimensions2} from "../engine/Dimensions2.js";
 import {computeBufferData} from "./computeBufferData.js";
 import {computeUniformProjectionData} from "./computeUniformProjectionData.js";
 import {createShaderSourceCodes} from "./shaders/createShaderSourceCodes.js";
@@ -112,5 +113,14 @@ export class Displayer {
 		canvas.width = parent.clientWidth;
 		canvas.height = parent.clientHeight;
 		this.gl.viewport(0, 0, canvas.width, canvas.height);
+	}
+
+	public getCanvasDimensions(): Dimensions2 {
+		const canvas = this.gl.canvas as HTMLCanvasElement;
+
+		return {
+			width: canvas.width,
+			height: canvas.height,
+		};
 	}
 }
