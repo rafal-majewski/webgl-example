@@ -1,14 +1,14 @@
 import type {Vertex} from "../../Vertex.js";
 
-export const squareLeftTopVertex: Vertex = {
+export const cubeRightTopFarVertex: Vertex = {
 	position: {
-		x: -0.5,
+		x: 0.5,
 		y: 0.5,
-		z: 1,
+		z: 2,
 	},
 	color: {
-		red: 0,
+		red: 1,
 		green: 1,
-		blue: 0,
+		blue: 1,
 	},
 };

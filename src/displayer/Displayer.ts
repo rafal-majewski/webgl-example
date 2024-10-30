@@ -1,10 +1,10 @@
 import type {Camera} from "../engine/Camera.js";
+import type {Cube} from "../engine/Cube.js";
 import {computeBufferData} from "./computeBufferData.js";
+import {computeUniformCameraData} from "./computeUniformCameraData.js";
 import {createShaderSourceCodes} from "./shaders/createShaderSourceCodes.js";
 import {createProgramFromShaderSourceCodes} from "./utilities/createProgramFromShaderSourceCodes.js";
 import type {ShaderSourceCodes} from "./utilities/ShaderSourceCodes.js";
-import type {Square} from "../engine/Square.js";
-import {computeUniformCameraData} from "./computeUniformCameraData.js";
 
 export class Displayer {
 	private readonly gl: WebGL2RenderingContext;
@@ -19,6 +19,7 @@ export class Displayer {
 	private static readonly dimensionInCoordinatesCount = 3;
 	private static readonly componentInColorCount = 3;
 	private static readonly triangleInSquareCount = 4;
+	private static readonly squareInCubeCount = 6;
 	private static readonly positionSize = Displayer.dimensionInCoordinatesCount;
 	private static readonly attributeColorVariableName = "a_color";
 	private static readonly colorSize = Displayer.componentInColorCount;
@@ -87,9 +88,9 @@ export class Displayer {
 		return new Displayer(gl, uniformCameraLocation);
 	}
 
-	public paint(square: Square, camera: Camera): void {
+	public paint(cube: Cube, camera: Camera): void {
 		this.gl.clear(this.gl.COLOR_BUFFER_BIT);
-		const bufferData = computeBufferData(square);
+		const bufferData = computeBufferData(cube);
 		this.gl.bufferData(this.gl.ARRAY_BUFFER, bufferData, this.gl.STATIC_DRAW);
 		const uniformCameraData = computeUniformCameraData(camera);
 		this.gl.uniform3fv(this.uniformCameraLocation, uniformCameraData);
@@ -97,7 +98,9 @@ export class Displayer {
 		this.gl.drawArrays(
 			this.gl.TRIANGLES,
 			0,
-			Displayer.triangleInSquareCount * Displayer.vertexInTriangleCount,
+			Displayer.squareInCubeCount *
+				Displayer.triangleInSquareCount *
+				Displayer.vertexInTriangleCount,
 		);
 	}
 
